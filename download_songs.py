@@ -49,13 +49,22 @@ def process_songs(raw_data):
             title = re.sub(r'^[^a-zA-ZăâîșțĂÂÎȘȚ]+', '', first_line).strip()  # Remove leading non-letters
             title = re.sub(r'[^a-zA-ZăâîșțĂÂÎȘȚ\?]+$', '', title).strip()  # Remove trailing non-letters except '?'
             
+            # Clean filename for URL
+            clean_title = title
+            filename = "".join(c for c in clean_title if c.isalnum() or c in (' ', '-', '_', '.'))
+            filename = f"{filename}.pptx"
+            
+            # Construct GitHub URL
+            github_url = f"https://raw.githubusercontent.com/radio-crestin/cantari-crestine-videoproiector/main/data/pptx/{category_names[category]}/{filename}"
+            
             song = {
                 'pk': f"{category}-{idx}",
                 'type': category_names[category],
                 'original_type_abvr': category,
                 'type_abvr': category.upper(),
                 'title': title,
-                'slides': slides
+                'slides': slides,
+                'pptx_url': github_url
             }
             processed_songs.append(song)
     
