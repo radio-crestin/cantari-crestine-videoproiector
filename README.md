@@ -36,24 +36,19 @@ python convert_to_pptx.py
    - Fiecare categorie are propriul său director cu prezentări PowerPoint
    - Arhive zip pentru fiecare categorie
    - O arhivă zip cu toate cântările (`Toate cantarile crestine videoproiector.zip`)
+
+
+4. Generați paginile web:
+```bash
+python convert_to_pptx.py
+```
+
+5. Verificați rezultatele în directorul `data/web/`:
    - Un fișier `index.html` pentru descărcarea arhivelor
+   - Un fișier `cantari-crestine-videoproiector.html` pentru vizualizarea cântărilor
 
 ## Structura arhivelor
 Puteti vedea structura arhivelor [aici](./data/pptx)
-
-## Descărcare individuală
-Fiecare cântare poate fi descărcată individual folosind identificatorul unic (pk). 
-De exemplu, pentru a descărca prima cântare din Cartea de Cântări BER (CC-1), folosiți:
-```
-https://raw.githubusercontent.com/radio-crestin/cantari-crestine-videoproiector/main/data/pptx/by-pk/CC-1.pptx
-```
-
-Formatul identificatorului este:
-- CC-[număr] pentru Carte Cântări BER
-- CT-[număr] pentru Cântări tineret
-- COR-[număr] pentru Cântări cor
-- J-[număr] pentru Jubilate
-- CB-[număr] pentru Cântări ale Bisericilor de peste veacuri
 
 ## Format prezentări
 

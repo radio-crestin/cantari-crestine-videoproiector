@@ -10,73 +10,6 @@ def load_songs():
     with open('data/songs.json', 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def create_slide(prs, text):
-    slide = prs.slides.add_slide(prs.slide_layouts[6])  # blank layout
-    
-    # Calculate center position
-    # Slide width is 10 inches, height is 5.625 inches
-    width = Inches(8)  # text box width
-    height = Inches(3)  # text box height
-    left = (prs.slide_width - width) / 2
-    top = (prs.slide_height - height) / 2
-    
-    txBox = slide.shapes.add_textbox(left, top, width, height)
-    tf = txBox.text_frame
-    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
-    
-    # Center align the text
-    p = tf.add_paragraph()
-    p.text = text
-    p.alignment = PP_ALIGN.CENTER
-    p.font.size = Pt(40)
-    
-    return slide
-
-def add_amin_to_slide(slide):
-    # Add "Amin!" to bottom right
-    left = Inches(8)
-    top = Inches(4.5)  # Adjusted to be higher up from the bottom
-    width = Inches(2)
-    height = Inches(1)
-    
-    txBox = slide.shapes.add_textbox(left, top, width, height)
-    tf = txBox.text_frame
-    
-    p = tf.add_paragraph()
-    p.text = "Amin!"
-    p.alignment = PP_ALIGN.RIGHT
-    p.font.size = Pt(24)
-
-def create_pptx_for_song(song):
-    # Create presentation
-    prs = Presentation()
-    
-    # Set slide dimensions to 16:9
-    prs.slide_width = Inches(10)
-    prs.slide_height = Inches(5.625)
-    
-    # Add slides for each verse/stanza
-    slides = song['slides']
-    for i, slide_text in enumerate(slides):
-        slide = create_slide(prs, slide_text)
-        # Add "Amin!" to the last slide with content
-        if i == len(slides) - 1:
-            add_amin_to_slide(slide)
-    
-    # Create directory structure
-    output_dir = os.path.join('data', 'pptx', song['type'])
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Save presentation
-    # Clean up title by removing leading and trailing non-letters except '?' and spaces, keeping diacritics
-    clean_title = re.sub(r'^[^a-zA-ZăâîșțĂÂÎȘȚ]+', '', song['title']).strip()  # Remove leading non-letters
-    clean_title = re.sub(r'[^a-zA-ZăâîșțĂÂÎȘȚ\?]+$', '', clean_title).strip()  # Remove trailing non-letters except '?'
-    filename = f"{clean_title}.pptx"
-    # Remove any remaining invalid characters from filename
-    filename = "".join(c for c in filename if c.isalnum() or c in (' ', '-', '_', '.'))
-    output_path = os.path.join(output_dir, filename)
-    prs.save(output_path)
-
 def generate_detailed_html(web_dir, songs):
     # Group songs by type
     songs_by_type = {}
@@ -313,51 +246,39 @@ def generate_index_html(web_dir, zip_files):
     with open(os.path.join(web_dir, 'index.html'), 'w', encoding='utf-8') as f:
         f.write(html_content)
 
-def create_zip_archive(source_dir, zip_name):
-    with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for root, _, files in os.walk(source_dir):
-            for file in files:
-                if file.endswith('.pptx'):  # Only include PPTX files
-                    file_path = os.path.join(root, file)
-                    arcname = os.path.relpath(file_path, source_dir)
-                    zipf.write(file_path, arcname)
 
 def main():
-    print("Starting PowerPoint conversion process...")
     
     # Clean up existing presentations
     pptx_dir = os.path.join('data', 'pptx')
-    if os.path.exists(pptx_dir):
-        print("Cleaning up existing presentations...")
-        for root, dirs, files in os.walk(pptx_dir, topdown=False):
-            for name in files:
-                os.remove(os.path.join(root, name))
-            for name in dirs:
-                os.rmdir(os.path.join(root, name))
-        os.rmdir(pptx_dir)
 
     # Process songs
     print("Loading songs data...")
     songs = load_songs()
-    total_songs = len(songs)
-    print(f"Converting {total_songs} songs to PowerPoint...")
-    for i, song in enumerate(songs, 1):
-        print(f"Converting song {i}/{total_songs}: {song['title']}")
-        create_pptx_for_song(song)
 
-    # Create zip archives for each category
-    print("\nCreating zip archives for each category...")
-    for category_dir in os.listdir(pptx_dir):
-        category_path = os.path.join(pptx_dir, category_dir)
-        if os.path.isdir(category_path):
-            print(f"Creating zip for {category_dir}...")
-            zip_name = os.path.join(pptx_dir, f"{category_dir}.zip")
-            create_zip_archive(category_path, zip_name)
+    web_dir = os.path.join('data', 'web',)
+    if os.path.exists(web_dir):
+        print("Cleaning up existing presentations...")
+        for root, dirs, files in os.walk(web_dir, topdown=False):
+            for name in files:
+                os.remove(os.path.join(root, name))
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
+        os.rmdir(web_dir)
+    os.makedirs(web_dir, exist_ok=True)
 
-    # Create one zip with all songs
-    print("\nCreating zip with all songs...")
-    create_zip_archive(pptx_dir, os.path.join(pptx_dir, 'Toate cantarile crestine videoproiector.zip'))
+    # Copy songs.json to web static directory
+    import shutil
+    shutil.copy2('data/songs.json', os.path.join(web_dir, 'songs.json'))
 
+    # Generate index.html with download links
+    print("\nGenerating index.html...")
+    zip_files = [f for f in os.listdir(pptx_dir) if f.endswith('.zip')]
+    generate_index_html(web_dir, zip_files)
+    # Generate detailed HTML page with all songs
+    print("\nGenerating detailed HTML page...")
+    generate_detailed_html(web_dir, songs)
+    print("Done!")
 
 if __name__ == '__main__':
     main()
