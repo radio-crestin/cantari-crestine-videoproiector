@@ -41,6 +41,20 @@ python convert_to_pptx.py
 ## Structura arhivelor
 Puteti vedea structura arhivelor [aici](./data/pptx)
 
+## Descărcare individuală
+Fiecare cântare poate fi descărcată individual folosind identificatorul unic (pk). 
+De exemplu, pentru a descărca prima cântare din Cartea de Cântări BER (CC-1), folosiți:
+```
+https://raw.githubusercontent.com/radio-crestin/cantari-crestine-videoproiector/main/data/pptx/by-pk/CC-1.pptx
+```
+
+Formatul identificatorului este:
+- CC-[număr] pentru Carte Cântări BER
+- CT-[număr] pentru Cântări tineret
+- COR-[număr] pentru Cântări cor
+- J-[număr] pentru Jubilate
+- CB-[număr] pentru Cântări ale Bisericilor de peste veacuri
+
 ## Format prezentări
 
 - Format 16:9

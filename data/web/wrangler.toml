@@ -1,7 +1,0 @@
-name = "cantari-crestine-web"
-main = "src/index.ts"
-compatibility_date = "2024-02-08"
-minify = true
-
-[assets]
-directory = "public"
