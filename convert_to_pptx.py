@@ -185,10 +185,10 @@ def generate_detailed_html(web_dir, songs):
             clean_title = re.sub(r'[^a-zA-ZăâîșțĂÂÎȘȚ\?]+$', '', clean_title).strip()
             filename = f"{clean_title}.pptx"
             filename = "".join(c for c in filename if c.isalnum() or c in (' ', '-', '_', '.'))
-            file_path = f"{song['type_abvr']}/{filename}"
+            file_path = f"https://raw.githubusercontent.com/radio-crestin/cantari-crestine-videoproiector/main/data/pptx/{song['type']}/{filename}"
             
             html_content += f'''
-                <a href="{file_path}" class="song-link" download title="{song['title']}">{song['title']}</a>'''
+                <a href="{file_path}" class="song-link" target="_blank" download title="{song['title']}">{song['title']}</a>'''
         
         html_content += '''
             </div>
