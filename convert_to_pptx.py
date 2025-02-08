@@ -357,7 +357,7 @@ def main():
     # create_zip_archive(pptx_dir, os.path.join(pptx_dir, 'Toate cantarile crestine videoproiector.zip'))
 
     web_dir = os.path.join('data', 'web', 'static')
-    os.mkdir(web_dir)
+    os.makedirs(web_dir, exist_ok=True)
 
     # Generate index.html with download links
     print("\nGenerating index.html...")
