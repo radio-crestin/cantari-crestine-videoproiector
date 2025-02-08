@@ -325,46 +325,38 @@ def main():
     
     # Clean up existing presentations
     pptx_dir = os.path.join('data', 'pptx')
-    if os.path.exists(pptx_dir):
-        print("Cleaning up existing presentations...")
-        for root, dirs, files in os.walk(pptx_dir, topdown=False):
-            for name in files:
-                os.remove(os.path.join(root, name))
-            for name in dirs:
-                os.rmdir(os.path.join(root, name))
-        os.rmdir(pptx_dir)
-
-    # Process songs
-    print("Loading songs data...")
+    # if os.path.exists(pptx_dir):
+    #     print("Cleaning up existing presentations...")
+    #     for root, dirs, files in os.walk(pptx_dir, topdown=False):
+    #         for name in files:
+    #             os.remove(os.path.join(root, name))
+    #         for name in dirs:
+    #             os.rmdir(os.path.join(root, name))
+    #     os.rmdir(pptx_dir)
+    #
+    # # Process songs
+    # print("Loading songs data...")
     songs = load_songs()
-    total_songs = len(songs)
-    print(f"Converting {total_songs} songs to PowerPoint...")
-    for i, song in enumerate(songs, 1):
-        print(f"Converting song {i}/{total_songs}: {song['title']}")
-        create_pptx_for_song(song)
+    # total_songs = len(songs)
+    # print(f"Converting {total_songs} songs to PowerPoint...")
+    # for i, song in enumerate(songs, 1):
+    #     print(f"Converting song {i}/{total_songs}: {song['title']}")
+    #     create_pptx_for_song(song)
+    #
+    # # Create zip archives for each category
+    # print("\nCreating zip archives for each category...")
+    # for category_dir in os.listdir(pptx_dir):
+    #     category_path = os.path.join(pptx_dir, category_dir)
+    #     if os.path.isdir(category_path):
+    #         print(f"Creating zip for {category_dir}...")
+    #         zip_name = os.path.join(pptx_dir, f"{category_dir}.zip")
+    #         create_zip_archive(category_path, zip_name)
+    #
+    # # Create one zip with all songs
+    # print("\nCreating zip with all songs...")
+    # create_zip_archive(pptx_dir, os.path.join(pptx_dir, 'Toate cantarile crestine videoproiector.zip'))
 
-    # Create zip archives for each category
-    print("\nCreating zip archives for each category...")
-    for category_dir in os.listdir(pptx_dir):
-        category_path = os.path.join(pptx_dir, category_dir)
-        if os.path.isdir(category_path):
-            print(f"Creating zip for {category_dir}...")
-            zip_name = os.path.join(pptx_dir, f"{category_dir}.zip")
-            create_zip_archive(category_path, zip_name)
-
-    # Create one zip with all songs
-    print("\nCreating zip with all songs...")
-    create_zip_archive(pptx_dir, os.path.join(pptx_dir, 'Toate cantarile crestine videoproiector.zip'))
-
-    web_dir = os.path.join('data', 'web')
-    if os.path.exists(web_dir):
-        print("Cleaning up existing web dir...")
-        for root, dirs, files in os.walk(web_dir, topdown=False):
-            for name in files:
-                os.remove(os.path.join(root, name))
-            for name in dirs:
-                os.rmdir(os.path.join(root, name))
-        os.rmdir(web_dir)
+    web_dir = os.path.join('data', 'web', 'static')
     os.mkdir(web_dir)
 
     # Generate index.html with download links
