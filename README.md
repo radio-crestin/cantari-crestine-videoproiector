@@ -39,13 +39,7 @@ python convert_to_pptx.py
    - Un fișier `index.html` pentru descărcarea arhivelor
 
 ## Structura arhivelor
-
-- **CC.zip** - Carte Cântări BER
-- **CT.zip** - Cântări tineret
-- **COR.zip** - Cântări cor
-- **J.zip** - Jubilate
-- **CB.zip** - Cântări ale Bisericilor de peste veacuri
-- **Toate cantarile crestine videoproiector.zip** - Toate cântările într-o singură arhivă
+Puteti vedea structura arhivelor [aici](./data/pptx)
 
 ## Format prezentări
 
