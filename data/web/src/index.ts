@@ -7,10 +7,6 @@ app.get('/', (c) => {
 })
 
 export default appimport express from 'express';
-import path from 'path';
-
-const app = express();
-const port = 3000;
 
 // Serve static files from the static directory
 app.use(express.static(path.join(__dirname, '../static')));
