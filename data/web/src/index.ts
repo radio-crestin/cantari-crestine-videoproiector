@@ -4,7 +4,7 @@ import { serveStatic } from 'hono/cloudflare-pages'
 const app = new Hono()
 
 // Serve static files
-app.use('/*', serveStatic({ root: './public' }))
+app.use('/*', serveStatic({ root: './static' }))
 
 // Serve index.html as the default route
 app.get('/', (c) => {
