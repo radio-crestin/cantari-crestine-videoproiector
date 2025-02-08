@@ -77,7 +77,7 @@ def create_pptx_for_song(song):
     output_path = os.path.join(output_dir, filename)
     prs.save(output_path)
 
-def generate_detailed_html(pptx_dir, songs):
+def generate_detailed_html(web_dir, songs):
     # Group songs by type
     songs_by_type = {}
     for song in songs:
@@ -224,10 +224,10 @@ def generate_detailed_html(pptx_dir, songs):
 </body>
 </html>'''
     
-    with open(os.path.join(pptx_dir, 'cantari-crestine-videoproiector.html'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(web_dir, 'cantari-crestine-videoproiector.html'), 'w', encoding='utf-8') as f:
         f.write(html_content)
 
-def generate_index_html(pptx_dir, zip_files):
+def generate_index_html(web_dir, zip_files):
     links_html = []
     base_url = "https://raw.githubusercontent.com/radio-crestin/cantari-crestine-videoproiector/main/data/pptx"
     
@@ -308,7 +308,7 @@ def generate_index_html(pptx_dir, zip_files):
 </body>
 </html>'''
     
-    with open(os.path.join(pptx_dir, 'index.html'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(web_dir, 'index.html'), 'w', encoding='utf-8') as f:
         f.write(html_content)
 
 def create_zip_archive(source_dir, zip_name):
@@ -355,14 +355,25 @@ def main():
     # Create one zip with all songs
     print("\nCreating zip with all songs...")
     create_zip_archive(pptx_dir, os.path.join(pptx_dir, 'Toate cantarile crestine videoproiector.zip'))
-    
+
+    web_dir = os.path.join('data', 'web')
+    if os.path.exists(web_dir):
+        print("Cleaning up existing web dir...")
+        for root, dirs, files in os.walk(web_dir, topdown=False):
+            for name in files:
+                os.remove(os.path.join(root, name))
+            for name in dirs:
+                os.rmdir(os.path.join(root, name))
+        os.rmdir(web_dir)
+    os.mkdir(web_dir)
+
     # Generate index.html with download links
     print("\nGenerating index.html...")
     zip_files = [f for f in os.listdir(pptx_dir) if f.endswith('.zip')]
-    generate_index_html(pptx_dir, zip_files)
+    generate_index_html(web_dir, zip_files)
     # Generate detailed HTML page with all songs
     print("\nGenerating detailed HTML page...")
-    generate_detailed_html(pptx_dir, songs)
+    generate_detailed_html(web_dir, songs)
     print("Done!")
 
 if __name__ == '__main__':
