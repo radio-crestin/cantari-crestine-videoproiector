@@ -52,6 +52,7 @@ def process_songs(raw_data):
             song = {
                 'pk': f"{category}-{idx}",
                 'type': category_names[category],
+                'original_type_abvr': category,
                 'type_abvr': category.upper(),
                 'title': title,
                 'slides': slides
