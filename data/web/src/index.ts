@@ -1,14 +1,19 @@
 import { Hono } from 'hono'
-import { serveStatic } from 'hono/cloudflare-pages'
 
-const app = new Hono()
+type Bindings = {
+  ASSETS: { get: (key: string) => Promise<Response | null> }
+}
 
-// Serve static files
-app.use('/*', serveStatic({ root: './static' }))
+const app = new Hono<{ Bindings: Bindings }>()
 
-// Serve index.html as the default route
-app.get('/', (c) => {
-  return c.html(c.env.ASSETS.get('index.html'))
+app.get('/', async (c) => {
+  const html = await c.env.ASSETS.get('index.html')
+  if (!html) {
+    return c.notFound()
+  }
+  return new Response(html.body, {
+    headers: { 'Content-Type': 'text/html' },
+  })
 })
 
 export default app
