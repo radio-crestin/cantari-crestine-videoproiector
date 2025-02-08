@@ -359,6 +359,10 @@ def main():
     web_dir = os.path.join('data', 'web', 'static')
     os.makedirs(web_dir, exist_ok=True)
 
+    # Copy songs.json to web static directory
+    import shutil
+    shutil.copy2('data/songs.json', os.path.join(web_dir, 'songs.json'))
+
     # Generate index.html with download links
     print("\nGenerating index.html...")
     zip_files = [f for f in os.listdir(pptx_dir) if f.endswith('.zip')]
