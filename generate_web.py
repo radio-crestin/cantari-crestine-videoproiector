@@ -257,14 +257,6 @@ def main():
     songs = load_songs()
 
     web_dir = os.path.join('data', 'web',)
-    if os.path.exists(web_dir):
-        print("Cleaning up existing presentations...")
-        for root, dirs, files in os.walk(web_dir, topdown=False):
-            for name in files:
-                os.remove(os.path.join(root, name))
-            for name in dirs:
-                os.rmdir(os.path.join(root, name))
-        os.rmdir(web_dir)
     os.makedirs(web_dir, exist_ok=True)
 
     # Copy songs.json to web static directory
