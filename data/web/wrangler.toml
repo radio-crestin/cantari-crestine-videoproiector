@@ -2,5 +2,8 @@ name = "cantari-crestine-web"
 main = "src/index.ts"
 compatibility_date = "2024-02-08"
 
-[assets]
-directory = "public"
+[site]
+bucket = "./public"
+
+[build]
+command = "npm run build"
